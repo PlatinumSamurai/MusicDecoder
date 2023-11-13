@@ -15,7 +15,7 @@ private:
 		                    0x95, 0xA6, 0xB7, 0xC8, 0xD9, 0xEA, 0xFB, 0x0C};
 	
 public:
-    	Decoder(const std::string &encodedFile);
+    	Decoder(const std::string &encodedFile, const std::string &directoryToSave = "");
     	void applyOffsets();
     	void close();
 };

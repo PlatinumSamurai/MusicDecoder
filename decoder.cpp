@@ -1,7 +1,20 @@
 #include "decoder.h"
 
-Decoder::Decoder(const std::string &encodedFile) {
-	std::string decodedFile = encodedFile;
+Decoder::Decoder(const std::string &encodedFile, const std::string &directoryToSave) {
+	std::string decodedFile;
+
+	if(!directoryToSave.empty()) {
+		decodedFile += directoryToSave;
+		auto it = std::find(encodedFile.rbegin(), encodedFile.rend(), '/');
+		decodedFile += encodedFile.substr(std::abs(std::distance(encodedFile.rend(), it)));
+	} else {
+		decodedFile = encodedFile;
+	}
+
+	auto it = std::find(decodedFile.rbegin(), decodedFile.rend(), '.');
+	decodedFile = decodedFile.substr(0, std::abs(std::distance(decodedFile.rend(), it)));
+	decodedFile += "mp3";
+
 	encoded = encodedFile;
 	fin.open(encoded, std::ios::out | std::ios::binary);
 
@@ -9,10 +22,6 @@ Decoder::Decoder(const std::string &encodedFile) {
 		std::cerr << "Bad name";
 		exit(-1);
 	}
-
-	auto it = std::find(encodedFile.rbegin(), encodedFile.rend(), '.');
-	decodedFile = encodedFile.substr(0, std::abs(std::distance(encodedFile.rend(), it)));
-	decodedFile += "mp3";
 
     	fout.open(decodedFile);
 }
